@@ -1,29 +1,22 @@
-﻿using Microsoft.Build.Framework;
-using System.ComponentModel.DataAnnotations;
-using RequiredAttribute = System.ComponentModel.DataAnnotations.RequiredAttribute;
+﻿
+using System.Collections.Generic;
 
-namespace OpenBootcamp.Models.DataModels
+namespace OpenBootcamp_LINQ
 {
-    public class Course : BaseEntity
+    public class Course
     {
-        [Required]
         public Chapter Index { get; set; } = new Chapter();
 
-        [Required, StringLength(50)]
         public string Name { get; set; }
 
-        [Required, StringLength(280)]
         public string ShortDescription { get; set; }
 
-        [Required]
         public string Description { get; set; }
 
         public Level Level { get; set; } = Level.Basic;
 
-        [Required]
         public ICollection<Category> Categories { get; set; } = new List<Category>();
 
-        [Required]
         public ICollection<Student> Students { get; set; } = new List<Student>();
         
     }

@@ -1,18 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿
+using System;
+using System.Collections.Generic;
 
-namespace OpenBootcamp.Models.DataModels
+namespace OpenBootcamp_LINQ
 {
-    public class Student : BaseEntity
+    public class Student
     {
-        [Required]
         public string FirstName { get; set; }
         
         public int Age { get; set; }
 
-        [Required]
         public string LastName { get; set; }
 
-        [Required]
         public DateTime Dob { get; set; }
 
         public ICollection<Course> Courses { get; set; } = new List<Course>();
