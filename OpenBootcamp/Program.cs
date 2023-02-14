@@ -1,6 +1,7 @@
 //1. Usings to work with EntityFramework
 using Microsoft.EntityFrameworkCore;
 using OpenBootcamp.DataAccess;
+using OpenBootcamp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,9 +15,25 @@ builder.Services.AddDbContext<UniversityDBContext>(options => options.UseSqlServ
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+// 4. Add CustomServices (folder services)
+
+builder.Services.AddScoped<IStudentService, StudentService>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+//5. CORS Configuration
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "CORSPolicy", builder =>
+    { 
+        builder.AllowAnyOrigin();
+        builder.AllowAnyMethod();
+        builder.AllowAnyHeader();
+    });
+});
 
 var app = builder.Build();
 
@@ -33,4 +50,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+//6. Tell app to use CORS
+
+app.UseCors("CORSPolicy");
 app.Run();

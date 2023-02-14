@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OpenBootcamp.DataAccess;
 using OpenBootcamp.Models.DataModels;
+using OpenBootcamp.Services;
 
 namespace OpenBootcamp.Controllers
 {
@@ -15,10 +16,13 @@ namespace OpenBootcamp.Controllers
     public class StudentsController : ControllerBase
     {
         private readonly UniversityDBContext _context;
+        //Service
+        private readonly IStudentService _studentService;
 
-        public StudentsController(UniversityDBContext context)
+        public StudentsController(UniversityDBContext context,IStudentService studentService)
         {
             _context = context;
+            _studentService = studentService;
         }
 
         // GET: api/Students
