@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OpenBootcamp_LINQ   
+namespace OpenBootcamp_LINQ
 {
     public class Snippets
     {
@@ -142,12 +142,11 @@ namespace OpenBootcamp_LINQ
                                 select new { Element = element };
 
             var leftOuterJoin2 = from element in firstList
-                                 from secondElement in secondList.Where(s=> s == element).DefaultIfEmpty()
+                                 from secondElement in secondList.Where(s => s == element).DefaultIfEmpty()
                                  select new { Element = secondElement };
 
             var unionList = leftOuterJoin.Union(rightOuterJoin);
         }
-
         static public void SkipTakeLinq()
         {
             var myList = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
@@ -157,6 +156,47 @@ namespace OpenBootcamp_LINQ
             var takeFirstTwoValues = myList.Take(2);
             //var takeLastTwoValues = myList.TakeLast(2);
             var takeWhileSmallerThan4 = myList.TakeWhile(num => num < 4);
+        }
+        public IEnumerable<T> GetPage<T>(IEnumerable<T> collection, int pageNumber, int resultsPerPage)
+        {
+            int startIndex = (pageNumber - 1) * resultsPerPage;
+            return collection.Skip(startIndex).Take(resultsPerPage);
+        }
+        public void ObtenerCuadradoDeLosMayoresQueElPromedio()
+        {
+            var lista = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+            var aboveAverage = from number in lista
+                               let average = lista.Average()
+                               let nQuared = Math.Pow(number, 2)
+                               where nQuared > average
+                               select number;
+            Console.WriteLine("Average {0}", lista.Average());
+
+            foreach (var number in aboveAverage)
+            {
+                Console.WriteLine("Number {0} Cuadrado {1}", number, Math.Pow(number, 2));
+            }
+        }
+        public void Zippeando()
+        {
+            var numeros = new List<int>() { 1, 2, 3 };
+            var letras = new List<string> { "uno", "dos", "tres" };
+
+            var numerosYLetras = numeros.Zip(letras, (numero, letra) => $"{numero} = {letra}");
+
+            foreach (var elemento in numerosYLetras)
+            {
+                Console.WriteLine(elemento);
+            }
+
+        }
+
+        public void AgregateQueries()
+        {
+            int[] numbers = { 1, 2, 3 };
+            int sum = numbers.Aggregate((prev,next)=> prev + next);
+            Console.WriteLine(sum);
         }
     }
 }

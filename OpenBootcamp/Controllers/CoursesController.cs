@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OpenBootcamp.DataAccess;
 using OpenBootcamp.Models.DataModels;
+using OpenBootcamp.Services;
 
 namespace OpenBootcamp.Controllers
 {
@@ -15,10 +16,12 @@ namespace OpenBootcamp.Controllers
     public class CoursesController : ControllerBase
     {
         private readonly UniversityDBContext _context;
+        private readonly ICourseService _courseService;
 
-        public CoursesController(UniversityDBContext context)
+        public CoursesController(UniversityDBContext context,ICourseService courseService)
         {
             _context = context;
+            _courseService = courseService;
         }
 
         // GET: api/Courses
@@ -26,6 +29,13 @@ namespace OpenBootcamp.Controllers
         public async Task<ActionResult<IEnumerable<Course>>> GetCourse()
         {
             return await _context.Course.ToListAsync();
+        }
+
+        [HttpGet("/CourseByCategory")]
+        public async Task<ActionResult<IEnumerable<Course>>> GetCourseByCategory()
+        {
+            var result = await _context.Course.ToListAsync();
+            return result;
         }
 
         // GET: api/Courses/5

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OpenBootcamp.DataAccess;
 using OpenBootcamp.Models.DataModels;
+using OpenBootcamp.Services;
 
 namespace OpenBootcamp.Controllers
 {
@@ -15,10 +16,12 @@ namespace OpenBootcamp.Controllers
     public class ChaptersController : ControllerBase
     {
         private readonly UniversityDBContext _context;
+        private readonly IChapterService _chapterService;
 
-        public ChaptersController(UniversityDBContext context)
+        public ChaptersController(UniversityDBContext context,IChapterService chapterService)
         {
             _context = context;
+            _chapterService = chapterService;
         }
 
         // GET: api/Chapters
@@ -26,6 +29,12 @@ namespace OpenBootcamp.Controllers
         public async Task<ActionResult<IEnumerable<Chapter>>> GetCourses()
         {
             return await _context.Courses.ToListAsync();
+        }
+
+        [HttpGet("getchapter/{courseID}")]
+        public Chapter GetChapterByCourseID(int courseID)
+        {
+            return _chapterService.GetChapter(courseID);
         }
 
         // GET: api/Chapters/5

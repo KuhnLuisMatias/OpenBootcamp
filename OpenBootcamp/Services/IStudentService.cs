@@ -6,5 +6,6 @@ namespace OpenBootcamp.Services
     {
         IEnumerable<Student> GetStudentsWithCourses();
         IEnumerable<Student> GetStudentsWithNoCourses();
+        IEnumerable<Course> GetCoursesByStudent(int studentID);
     }
 }

@@ -2,19 +2,19 @@
 
 namespace OpenBootcamp.Services
 {
-    public class StudentService : IStudentService
+    public class CourseService : ICourseService
     {
-        public IEnumerable<Course> GetCoursesByStudent(int studentID)
+        public IEnumerable<Course> GetChapterByCourse(int courseID)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Student> GetStudentsWithCourses()
+        public IEnumerable<Course> GetCourseWithOutSubject()
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Student> GetStudentsWithNoCourses()
+        public IEnumerable<Student> GetStudentByCourse(int courseID)
         {
             throw new NotImplementedException();
         }

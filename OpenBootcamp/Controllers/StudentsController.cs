@@ -32,6 +32,18 @@ namespace OpenBootcamp.Controllers
             return await _context.Students.ToListAsync();
         }
 
+        [HttpGet("withoutcourses")]
+        public IEnumerable<Student> GetStudentsWithNoCourses()
+        {
+           return _studentService.GetStudentsWithNoCourses();
+        }
+
+        [HttpGet("getcoursesbystudent/{studentID}")]
+        public IEnumerable<Course> GetCoursesByStudent(int studentID)
+        {
+            return _studentService.GetCoursesByStudent(studentID);
+        }
+
         // GET: api/Students/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Student>> GetStudent(int id)
