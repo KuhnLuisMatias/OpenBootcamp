@@ -1,4 +1,4 @@
-﻿namespace OpenBootcamp.Models
+﻿namespace OpenBootcamp.Models.DataModels
 {
     public class JwtSettings
     {
@@ -27,7 +27,7 @@
         Las propiedades tienen valores predeterminados y pueden ser configuradas mediante un archivo de configuración o directamente en el código. Estas configuraciones son importantes para garantizar que los tokens de autenticación sean válidos y seguros.*/
 
         public bool ValidateIssuerSigningKey { get; set; }
-        public string? IssuerSigningKey { get; set; }
+        public string? IssuerSigningKey { get; set; } = string.Empty;
 
         public bool ValidateIssuer { get; set; }
         public string? ValidIssuer { get; set; }
