@@ -12,8 +12,8 @@ using OpenBootcamp.DataAccess;
 namespace OpenBootcamp.Migrations
 {
     [DbContext(typeof(UniversityDBContext))]
-    [Migration("20230211085810_Courses")]
-    partial class Courses
+    [Migration("20230309010403_Create Users table")]
+    partial class CreateUserstable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -201,6 +201,9 @@ namespace OpenBootcamp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("Age")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
@@ -291,6 +294,9 @@ namespace OpenBootcamp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("rol")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Users");
@@ -329,7 +335,7 @@ namespace OpenBootcamp.Migrations
             modelBuilder.Entity("OpenBootcamp.Models.DataModels.Chapter", b =>
                 {
                     b.HasOne("OpenBootcamp.Models.DataModels.Course", "course")
-                        .WithOne("index")
+                        .WithOne("Index")
                         .HasForeignKey("OpenBootcamp.Models.DataModels.Chapter", "CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -339,7 +345,7 @@ namespace OpenBootcamp.Migrations
 
             modelBuilder.Entity("OpenBootcamp.Models.DataModels.Course", b =>
                 {
-                    b.Navigation("index")
+                    b.Navigation("Index")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OpenBootcamp.DataAccess;
 using OpenBootcamp.Helpers;
 using OpenBootcamp.Models.DataModels;
 
@@ -12,10 +13,12 @@ namespace OpenBootcamp.Controllers
     public class AccountController : ControllerBase
     {
         private readonly JwtSettings _jwtSettings;
+        private readonly UniversityDBContext _context;
 
-        public AccountController(JwtSettings jwtSettings)
+        public AccountController(UniversityDBContext context, JwtSettings jwtSettings)
         {
             _jwtSettings = jwtSettings;
+            _context = context;
         }
 
         private IEnumerable<User> Logins = new List<User>()
@@ -42,17 +45,25 @@ namespace OpenBootcamp.Controllers
             try
             {
                 var Token = new UserTokens();
-                var Valid = Logins.Any(user => user.Name.Equals(userLogin.UserName, StringComparison.OrdinalIgnoreCase));
-                if (Valid)
+
+                var searchUser = (from user in _context.Users
+                                  where user.Name == userLogin.UserName
+                                  && user.Password == userLogin.Password
+                                  select user).FirstOrDefault();
+
+                //var Valid = Logins.Any(user => user.Name.Equals(userLogin.UserName, StringComparison.OrdinalIgnoreCase));
+                //if (Valid)
+                if(searchUser != null)
                 {
-                    var user = Logins.FirstOrDefault(user => user.Name.Equals(userLogin.UserName, StringComparison.OrdinalIgnoreCase));
+                   // var user = Logins.FirstOrDefault(user => user.Name.Equals(userLogin.UserName, StringComparison.OrdinalIgnoreCase));
 
                     Token = JwtHelpers.GenTokenKey(new UserTokens()
                     {
-                        UserName = user.Name,
-                        EmailId = user.Email,
-                        Id = user.Id,
+                        UserName = searchUser.Name,
+                        EmailId = searchUser.Email,
+                        Id = searchUser.Id,
                         GuidId = Guid.NewGuid(),
+                        rol = searchUser.rol
                     }, _jwtSettings);
                 }
                 else
@@ -66,10 +77,11 @@ namespace OpenBootcamp.Controllers
         }
 
         [HttpGet]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Roles ="Administrador,User")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrador,User")]
         public IActionResult GetUserList()
         {
             return Ok(Logins);
         }
+
     }
 }

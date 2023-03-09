@@ -6,8 +6,11 @@ namespace OpenBootcamp.Models.DataModels
     {
         [Required]
         public string UserName { get; set; }
-        
-        [Required] 
+
+        [Required]
         public string Password { get; set; }
+
+        [Required]
+        public Rol rol { get; set; }
     }
 }

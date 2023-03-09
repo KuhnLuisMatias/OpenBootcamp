@@ -7,6 +7,7 @@ namespace OpenBootcamp.Helpers
 {
     public static class JwtHelpers
     {
+        //https://www.c-sharpcorner.com/article/jwt-token-authentication-and-authorizations-in-net-core-6-0-web-api/
         public static IEnumerable<Claim> GetClaims(this UserTokens userAccounts, out Guid Id)
         {
             Id = Guid.NewGuid();

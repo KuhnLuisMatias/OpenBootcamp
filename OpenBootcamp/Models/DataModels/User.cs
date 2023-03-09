@@ -15,5 +15,7 @@ namespace OpenBootcamp.Models.DataModels
         
         [Required]
         public string Password { get; set; } = string.Empty;
+
+        public Rol rol { get; set; }
     }
 }

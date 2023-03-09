@@ -10,5 +10,12 @@
         public string EmailId { get; set; }
         public Guid GuidId { get; set; }
         public DateTime ExpiredTime { get; set; }
+        public Rol rol { get; set; } 
+    }
+
+    public enum Rol
+    {
+        Administrador,
+        Usuario
     }
 }
