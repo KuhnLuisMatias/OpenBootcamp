@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OpenBootcamp.Helpers;
 using OpenBootcamp.Models.DataModels;
@@ -20,7 +22,7 @@ namespace OpenBootcamp.Controllers
         {
             new User()
             {
-                Id =1,
+                Id = 1,
                 Email= "test@test.com",
                 Name= "Admin",
                 Password = "Admin"
@@ -61,6 +63,13 @@ namespace OpenBootcamp.Controllers
             {
                 throw new Exception("GetToken Error", ex);
             }
+        }
+
+        [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Roles ="Administrador,User")]
+        public IActionResult GetUserList()
+        {
+            return Ok(Logins);
         }
     }
 }

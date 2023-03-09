@@ -9,26 +9,31 @@ namespace OpenBootcamp.Helpers
     {
         public static IEnumerable<Claim> GetClaims(this UserTokens userAccounts, out Guid Id)
         {
+            Id = Guid.NewGuid();
+            return GetClaims(userAccounts, Id);
+        }
+        public static IEnumerable<Claim> GetClaims(this UserTokens userAccounts, Guid Id)
+        {
             List<Claim> claims = new List<Claim>()
             {
                 new Claim("Id",userAccounts.Id.ToString()),
                 new Claim(ClaimTypes.Name,userAccounts.UserName),
                 new Claim(ClaimTypes.Email,userAccounts.EmailId),
                 new Claim(ClaimTypes.NameIdentifier,userAccounts.Id.ToString()),
-                new Claim(ClaimTypes.Expiration,DateTime.UtcNow.AddDays(1).ToString("MMM ddd dd yyyy HH:mm:ss tt"))
+                new Claim(ClaimTypes.Expiration, DateTime.UtcNow.AddDays(1).ToString("MMM ddd dd yyyy HH:mm:ss tt"))
+
             };
 
             if (userAccounts.UserName == "Admin")
                 claims.Add(new Claim(ClaimTypes.Role, "Administrador"));
-            else if (userAccounts.UserName == "User 1")
+            else if (userAccounts.UserName == "User1")
             {
                 claims.Add(new Claim(ClaimTypes.Role, "User"));
-                claims.Add(new Claim("UserOnly", "User 1"));
+                claims.Add(new Claim("UserOnly", "User1"));
             }
 
             return claims;
         }
-
         public static UserTokens GenTokenKey(UserTokens model, JwtSettings jwtSettings)
         {
             try
@@ -39,7 +44,7 @@ namespace OpenBootcamp.Helpers
 
                 //Obtain Secret Key
                 var key = System.Text.Encoding.ASCII.GetBytes(jwtSettings.IssuerSigningKey);
-                Guid Id;
+                Guid Id = Guid.Empty;
 
                 //Expires in 1 Day
                 DateTime expireTime = DateTime.UtcNow.AddDays(1);
@@ -51,12 +56,12 @@ namespace OpenBootcamp.Helpers
                 var jwToken = new JwtSecurityToken(
                     issuer: jwtSettings.ValidIssuer,
                     audience: jwtSettings.ValidAudience,
-                    claims: model.GetClaims(out Id),
+                    claims: GetClaims(model, out Id),
                     notBefore: new DateTimeOffset(DateTime.Now).DateTime,
                     expires: new DateTimeOffset(expireTime).DateTime,
-                    signingCredentials: new SigningCredentials(
-                        new SymmetricSecurityKey(key),
-                        SecurityAlgorithms.HmacSha256));
+                    signingCredentials: new SigningCredentials
+                    (new SymmetricSecurityKey(key),
+                    SecurityAlgorithms.HmacSha256));
 
                 userToken.Token = new JwtSecurityTokenHandler().WriteToken(jwToken);
                 userToken.UserName = model.UserName;
@@ -67,7 +72,7 @@ namespace OpenBootcamp.Helpers
             }
             catch (Exception ex)
             {
-                throw new Exception("Erro Generating the JWT", ex); ;
+                throw new Exception("Error Generating the JWT", ex); ;
             }
         }
     }
