@@ -7,6 +7,17 @@ using OpenBootcamp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//Localization
+builder.Services.AddLocalization(opt => opt.ResourcesPath = "Resources");
+
+//Supported Cultures
+var supportedCultures = new[] { "en-US", "es-ES", "fr-FR" };
+var localizationOptions = new RequestLocalizationOptions()
+    .SetDefaultCulture(supportedCultures[0])
+    .AddSupportedCultures(supportedCultures)
+    .AddSupportedUICultures(supportedCultures);
+
+
 //2. COnnection with SQL Server Express
 const string CONNECTIONNAME = "UniversityDB";
 var connectionString = builder.Configuration.GetConnectionString(CONNECTIONNAME);
@@ -78,6 +89,9 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+//Add Localization to App
+app.UseRequestLocalization(localizationOptions);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
